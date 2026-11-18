@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0RESMON Revenue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif&display=swap">
+<style>
+  /* Layout: one quiet 920px column, sections separated by space and hairlines, colour used only for data. */
+  :root {
+    --bg: #f6f7f8; --fg: #15181d; --muted: #6a7280; --line: #e2e5ea; --soft: #eceff2;
+    --accent: #0f7a65; --warn: #d17a22; --tip: #ffffff;
+    --display: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1114; --fg: #e9ebee; --muted: #949ba6; --line: #252a31; --soft: #1a1e23;
+            --accent: #3cc2a0; --warn: #eea255; --tip: #1c2026; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 920px; margin: 0 auto; padding-block: 56px 72px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 64px; }
+  .num { font-variant-numeric: tabular-nums; }
+  .eyebrow { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 400 clamp(40px, 7vw, 64px)/1 var(--display); margin: 10px 0 18px; letter-spacing: -.01em; }
+  h2 { font: 600 17px/1.3 var(--body); margin: 0; letter-spacing: -.005em; }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 40em; margin: 0; color: var(--fg); text-wrap: pretty; }
+  .lede b { font-weight: 600; }
+  .down { color: var(--warn); }
+  .sub { color: var(--muted); margin: 4px 0 0; max-width: 42em; }
+  section { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+  .hero { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .hero > div { padding: 22px 20px 22px 0; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .hero > div + div { padding-left: 20px; border-left: 1px solid var(--line); }
+  .hero .big { font: 400 54px/1 var(--display); }
+  .hero .mid { font: 400 34px/1.1 var(--display); }
+  .hero .lbl { font-size: 13px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr 1fr; }
+    .hero > div:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .hero > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .hero > div:first-child { grid-column: 1 / -1; border-bottom: 1px solid var(--line); }
+    .hero > div:nth-child(2) { padding-left: 0; border-left: 0; }
+    .hero > div:nth-child(3) { padding-left: 20px; border-left: 1px solid var(--line); border-top: 0; }
+    .hero > div:nth-child(4) { grid-column: 1 / -1; padding-left: 0; border-left: 0; }
+  }
+
+  .chart { position: relative; width: 100%; }
+  .chart svg { display: block; width: 100%; overflow: visible; }
+  .chart text { fill: var(--muted); font: 11px var(--body); font-variant-numeric: tabular-nums; }
+  .chart text.v { fill: var(--fg); font-weight: 500; }
+  .tip { position: absolute; pointer-events: none; background: var(--tip); border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; font-size: 12px; line-height: 1.5; white-space: nowrap; box-shadow: 0 6px 24px rgb(0 0 0 / .12); font-variant-numeric: tabular-nums; z-index: 3; }
+  .tip b { display: block; font-weight: 600; margin-bottom: 1px; }
+  .tip span { color: var(--muted); }
+
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .fact { padding: 20px 18px 22px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .fact:not(:nth-child(4n+1)) { padding-left: 18px; border-left: 1px solid var(--line); }
+  .fact .fv { font: 400 30px/1.1 var(--display); }
+  .fact .ft { font-size: 13px; color: var(--muted); line-height: 1.45; }
+  @media (max-width: 760px) {
+    .facts { grid-template-columns: 1fr 1fr; }
+    .fact:not(:nth-child(4n+1)) { padding-left: 0; border-left: 0; }
+    .fact:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--line); }
+  }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; gap: 64px; } }
+  .legend { display: flex; gap: 18px; font-size: 12px; color: var(--muted); }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; }
+  .buyers { list-style: none; margin: 0; padding: 0; counter-reset: b; }
+  .buyers li { display: grid; grid-template-columns: 22px 1fr auto auto; gap: 12px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .buyers li:first-child { border-top: 1px solid var(--line); }
+  .buyers .r { color: var(--muted); font-size: 12px; }
+  .buyers .u { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .buyers .n { color: var(--muted); font-size: 13px; }
+  .buyers .e { font-weight: 500; min-width: 76px; text-align: right; }
+
+  details { color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+  summary { cursor: pointer; color: var(--fg); font-weight: 500; }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  details ul { padding-left: 18px; margin: 14px 0 0; display: flex; flex-direction: column; gap: 8px; max-width: 46em; }
+  .foot { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow">Tebex store · Feb 24 – Nov 18, 2026 · Paris time</div>
+    <h1>0RESMON Revenue</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <div class="hero" id="hero"></div>
+
+  <section>
+    <div>
+      <h2>Revenue per day, month by month</h2>
+      <p class="sub">Measured only on hours where no sale could have been missed, scaled to 24 h. February is based on a few hours only.</p>
+    </div>
+    <div class="chart" id="c-months"></div>
+  </section>
+
+  <section>
+    <div>
+      <h2>When it sells</h2>
+      <p class="sub">Average revenue per hour, for every hour of the week.</p>
+    </div>
+    <div class="chart" id="c-heat"></div>
+  </section>
+
+  <section>
+    <h2>Numbers worth knowing</h2>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2>Order sizes</h2>
+      <div class="legend"><span><i style="background:var(--muted)"></i>share of orders</span><span><i style="background:var(--accent)"></i>share of revenue</span></div>
+      <div class="chart" id="c-baskets"></div>
+    </section>
+    <section>
+      <h2>Top customers</h2>
+      <ol class="buyers" id="buyers"></ol>
+    </section>
+  </div>
+
+  <section>
+    <div>
+      <h2>Every day the tracker saw</h2>
+      <p class="sub">Raw captured revenue. Dips usually line up with tracking gaps, shown as the strip underneath (hours verified that day).</p>
+    </div>
+    <div class="chart" id="c-days"></div>
+  </section>
+
+  <details>
+    <summary>About the data</summary>
+    <ul id="about"></ul>
+  </details>
+  <div class="foot" id="foot"></div>
+</main>
+
+<script>
+const D = {"k": {"est_jour": 1614.9, "est_semaine": 11304.29, "est_mois": 49157.51, "est_an": 589438, "ventes_jour": 33.9, "eur_heure": 69.03, "observe_eur": 299922.34, "observe_n": 6281, "estime_periode": 474790.93, "capte_pct": 63.2, "heures_verifiees": 3107.0, "heures_total": 6406.3, "couverture_pct": 48.5, "jours": 266.9, "panier_moy": 47.75, "panier_med": 36.0, "panier_max": 825.0, "acheteurs": 2589, "recurrents": 659, "part_recurrents": 45.7, "top10_part": 33.7, "nov_jour": 962.19, "oct_jour": 1598.87, "nov_vs_oct": -39.8, "pic_eur_h": 105.66, "creux_eur_h": 29.07}, "facts": {"every_min": 42.47787610619469, "per_min": 1.1214583333333334, "best": {"d": "Friday", "h": 19, "v": 153.13}, "worst": {"d": "Wednesday", "h": 11, "v": 12.39}, "evening_x": 2.9444297059528295, "weekend_pct": 11.139118055981513, "big_orders_pct": 8.454067823594968, "big_rev_pct": 28.31653353998238, "price": 30.0, "price_n": 253, "same_min": 353}, "months": [{"m": "Feb", "v": 2816.9, "n": 70.19, "obs": 4246.89, "est": 12278.03, "h": 19.1}, {"m": "Mar", "v": 2728.39, "n": 52.56, "obs": 28145.5, "est": 84580.18, "h": 139.3}, {"m": "Apr", "v": 1822.47, "n": 36.99, "obs": 31671.86, "est": 54674.08, "h": 242.0}, {"m": "May", "v": 1550.61, "n": 32.94, "obs": 30439.34, "est": 48068.88, "h": 351.9}, {"m": "Jun", "v": 1435.0, "n": 30.33, "obs": 41556.79, "est": 43050.13, "h": 458.2}, {"m": "Jul", "v": 1765.92, "n": 40.65, "obs": 50853.52, "est": 54743.41, "h": 550.2}, {"m": "Aug", "v": 1888.57, "n": 37.85, "obs": 40497.59, "est": 58545.75, "h": 462.2}, {"m": "Sep", "v": 1745.99, "n": 36.61, "obs": 24128.9, "est": 52379.66, "h": 227.5}, {"m": "Oct", "v": 1598.87, "n": 33.45, "obs": 31176.9, "est": 49564.95, "h": 307.8}, {"m": "Nov", "v": 962.19, "n": 18.03, "obs": 17205.05, "est": 16905.86, "h": 348.7}], "days": [["2026-02-24", 1067.72, 23, 8.61], ["2026-02-25", 690.73, 16, 3.53], ["2026-02-26", 2488.44, 47, 7.01], ["2026-02-27", 0.0, 0, 0], ["2026-02-28", 0.0, 0, 0], ["2026-03-01", 0.0, 0, 0], ["2026-03-02", 0.0, 0, 0], ["2026-03-03", 0.0, 0, 0], ["2026-03-04", 0.0, 0, 0], ["2026-03-05", 0.0, 0, 0], ["2026-03-06", 479.87, 5, 0.01], ["2026-03-07", 262.24, 4, 0], ["2026-03-08", 820.43, 15, 0], ["2026-03-09", 0.0, 0, 0], ["2026-03-10", 277.78, 5, 2.25], ["2026-03-11", 342.68, 5, 0.08], ["2026-03-12", 213.2, 5, 0], ["2026-03-13", 856.73, 14, 1.94], ["2026-03-14", 1850.35, 33, 15.58], ["2026-03-15", 3435.67, 48, 22.58], ["2026-03-16", 1059.05, 19, 7.56], ["2026-03-17", 1435.94, 25, 12.46], ["2026-03-18", 2231.44, 37, 13.29], ["2026-03-19", 975.53, 22, 4.35], ["2026-03-20", 1517.31, 33, 4.5], ["2026-03-21", 2203.14, 41, 7.99], ["2026-03-22", 1818.27, 35, 10.69], ["2026-03-23", 1289.77, 23, 1.53], ["2026-03-24", 895.71, 17, 5.23], ["2026-03-25", 857.95, 17, 0.25], ["2026-03-26", 588.23, 14, 3.51], ["2026-03-27", 1046.04, 18, 1.5], ["2026-03-28", 638.83, 14, 4.51], ["2026-03-29", 1586.38, 37, 9.74], ["2026-03-30", 689.22, 18, 5.71], ["2026-03-31", 773.74, 16, 4.04], ["2026-04-01", 0.0, 0, 0], ["2026-04-02", 0.0, 0, 0], ["2026-04-03", 0.0, 0, 0], ["2026-04-04", 538.53, 12, 0.77], ["2026-04-05", 2085.03, 38, 10.25], ["2026-04-06", 1800.8, 44, 7.76], ["2026-04-07", 650.88, 8, 1.25], ["2026-04-08", 925.61, 17, 14.88], ["2026-04-09", 194.73, 6, 1.5], ["2026-04-10", 1335.26, 33, 12.18], ["2026-04-11", 2991.87, 61, 11.68], ["2026-04-12", 1348.85, 21, 5.31], ["2026-04-13", 782.59, 11, 2.41], ["2026-04-14", 236.53, 5, 0.33], ["2026-04-15", 477.91, 10, 6.89], ["2026-04-16", 420.32, 7, 3.15], ["2026-04-17", 1122.73, 22, 8.72], ["2026-04-18", 904.16, 16, 4.71], ["2026-04-19", 1218.31, 30, 23.25], ["2026-04-20", 2077.43, 42, 19.1], ["2026-04-21", 1957.46, 38, 18.14], ["2026-04-22", 950.76, 22, 11.56], ["2026-04-23", 621.34, 14, 3.5], ["2026-04-24", 628.11, 16, 3.22], ["2026-04-25", 1699.17, 35, 9.43], ["2026-04-26", 1468.99, 39, 19.5], ["2026-04-27", 1143.31, 26, 16.74], ["2026-04-28", 693.84, 14, 2.99], ["2026-04-29", 2348.57, 30, 10.51], ["2026-04-30", 1048.77, 27, 12.26], ["2026-05-01", 1242.84, 25, 7.64], ["2026-05-02", 2587.15, 53, 21.15], ["2026-05-03", 1318.21, 34, 19.39], ["2026-05-04", 476.48, 10, 12.52], ["2026-05-05", 835.65, 13, 8.51], ["2026-05-06", 620.99, 15, 7.02], ["2026-05-07", 184.31, 4, 10.0], ["2026-05-08", 1131.83, 22, 4.76], ["2026-05-09", 1442.52, 33, 18.97], ["2026-05-10", 1578.51, 35, 17.75], ["2026-05-11", 854.13, 10, 15.0], ["2026-05-12", 835.31, 13, 3.56], ["2026-05-13", 1067.02, 23, 14.96], ["2026-05-14", 1113.18, 23, 4.76], ["2026-05-15", 522.61, 11, 13.89], ["2026-05-16", 1493.48, 25, 13.13], ["2026-05-17", 1364.29, 31, 23.5], ["2026-05-18", 351.4, 6, 1.43], ["2026-05-19", 0.0, 0, 0], ["2026-05-20", 0.0, 0, 0], ["2026-05-21", 0.0, 0, 0], ["2026-05-22", 0.0, 0, 0], ["2026-05-23", 0.0, 0, 0], ["2026-05-24", 390.12, 9, 4.25], ["2026-05-25", 941.24, 22, 13.34], ["2026-05-26", 1265.73, 30, 20.86], ["2026-05-27", 1697.86, 33, 14.59], ["2026-05-28", 1814.37, 39, 24.0], ["2026-05-29", 1741.96, 41, 23.75], ["2026-05-30", 2148.32, 45, 24.0], ["2026-05-31", 1419.83, 32, 9.17], ["2026-06-01", 2622.86, 58, 24.0], ["2026-06-02", 560.79, 15, 7.25], ["2026-06-03", 737.65, 21, 14.03], ["2026-06-04", 481.73, 11, 15.53], ["2026-06-05", 969.89, 24, 24.0], ["2026-06-06", 736.29, 17, 13.87], ["2026-06-07", 972.37, 23, 13.26], ["2026-06-08", 1257.65, 26, 23.75], ["2026-06-09", 696.48, 13, 4.34], ["2026-06-10", 1663.81, 33, 17.34], ["2026-06-11", 1331.36, 23, 21.0], ["2026-06-12", 1702.4, 32, 10.49], ["2026-06-13", 1567.56, 33, 20.12], ["2026-06-14", 932.42, 17, 16.27], ["2026-06-15", 1577.22, 18, 8.01], ["2026-06-16", 1209.84, 23, 19.27], ["2026-06-17", 1498.11, 29, 17.77], ["2026-06-18", 2113.22, 37, 14.27], ["2026-06-19", 1853.24, 39, 5.51], ["2026-06-20", 1092.5, 27, 6.51], ["2026-06-21", 665.11, 18, 4.79], ["2026-06-22", 1331.03, 27, 10.39], ["2026-06-23", 1030.69, 27, 24.0], ["2026-06-24", 1443.98, 33, 24.0], ["2026-06-25", 1646.07, 46, 21.75], ["2026-06-26", 1914.36, 50, 20.53], ["2026-06-27", 1959.67, 45, 13.92], ["2026-06-28", 2436.52, 27, 12.49], ["2026-06-29", 1589.19, 27, 16.74], ["2026-06-30", 1962.78, 45, 12.99], ["2026-07-01", 3370.67, 64, 21.6], ["2026-07-02", 425.47, 9, 0.25], ["2026-07-03", 2038.99, 25, 7.31], ["2026-07-04", 1169.14, 34, 19.27], ["2026-07-05", 230.37, 6, 5.27], ["2026-07-06", 1234.76, 31, 15.17], ["2026-07-07", 1175.86, 18, 18.63], ["2026-07-08", 1019.05, 23, 16.77], ["2026-07-09", 1259.78, 38, 15.16], ["2026-07-10", 2279.23, 64, 16.99], ["2026-07-11", 1657.43, 45, 20.14], ["2026-07-12", 2592.48, 50, 21.1], ["2026-07-13", 1409.85, 34, 20.25], ["2026-07-14", 1151.1, 25, 6.73], ["2026-07-15", 1370.92, 30, 22.05], ["2026-07-16", 2027.78, 48, 19.5], ["2026-07-17", 2326.93, 53, 21.15], ["2026-07-18", 2005.03, 48, 23.25], ["2026-07-19", 3302.29, 70, 23.25], ["2026-07-20", 1424.26, 43, 22.75], ["2026-07-21", 1320.28, 32, 23.75], ["2026-07-22", 1508.26, 34, 23.25], ["2026-07-23", 824.88, 23, 23.5], ["2026-07-24", 1328.09, 31, 14.98], ["2026-07-25", 1779.38, 38, 24.0], ["2026-07-26", 1384.63, 45, 23.5], ["2026-07-27", 2852.03, 51, 23.75], ["2026-07-28", 1888.08, 54, 23.5], ["2026-07-29", 947.37, 34, 8.54], ["2026-07-30", 1913.65, 50, 14.12], ["2026-07-31", 1635.48, 34, 10.74], ["2026-08-01", 2365.52, 51, 23.0], ["2026-08-02", 2671.2, 47, 23.14], ["2026-08-03", 1969.17, 48, 10.85], ["2026-08-04", 1892.08, 43, 21.75], ["2026-08-05", 42.0, 1, 1.19], ["2026-08-06", 0.0, 0, 0], ["2026-08-07", 0.0, 0, 0], ["2026-08-08", 0.0, 0, 0], ["2026-08-09", 0.0, 0, 0], ["2026-08-10", 0.0, 0, 0], ["2026-08-11", 0.0, 0, 0], ["2026-08-12", 901.06, 19, 8.12], ["2026-08-13", 2952.24, 36, 22.75], ["2026-08-14", 1169.6, 22, 23.5], ["2026-08-15", 2055.1, 38, 22.5], ["2026-08-16", 1531.31, 29, 23.25], ["2026-08-17", 1309.43, 21, 23.75], ["2026-08-18", 1683.91, 44, 23.0], ["2026-08-19", 1610.49, 43, 23.0], ["2026-08-20", 1773.6, 38, 23.5], ["2026-08-21", 2881.14, 45, 23.5], ["2026-08-22", 1821.98, 38, 24.0], ["2026-08-23", 1277.14, 25, 8.55], ["2026-08-24", 1801.35, 35, 24.0], ["2026-08-25", 656.58, 27, 10.08], ["2026-08-26", 1137.55, 23, 8.09], ["2026-08-27", 990.56, 26, 12.26], ["2026-08-28", 1008.33, 24, 22.48], ["2026-08-29", 1090.38, 23, 8.7], ["2026-08-30", 2530.47, 32, 23.75], ["2026-08-31", 1375.4, 40, 23.5], ["2026-09-01", 2422.37, 50, 21.81], ["2026-09-02", 2124.23, 43, 14.75], ["2026-09-03", 890.34, 18, 7.29], ["2026-09-04", 1403.61, 29, 8.63], ["2026-09-05", 182.24, 6, 3.36], ["2026-09-06", 889.95, 19, 10.87], ["2026-09-07", 627.97, 13, 4.4], ["2026-09-08", 408.84, 14, 4.41], ["2026-09-09", 1103.37, 28, 6.91], ["2026-09-10", 840.87, 20, 8.51], ["2026-09-11", 975.24, 18, 7.25], ["2026-09-12", 361.48, 8, 2.4], ["2026-09-13", 2102.92, 33, 12.51], ["2026-09-14", 467.96, 10, 5.08], ["2026-09-15", 981.95, 16, 9.73], ["2026-09-16", 667.83, 15, 12.01], ["2026-09-17", 1577.8, 29, 12.19], ["2026-09-18", 56.19, 2, 1.23], ["2026-09-19", 385.57, 14, 11.58], ["2026-09-20", 1200.04, 32, 15.65], ["2026-09-21", 867.25, 18, 3.39], ["2026-09-22", 1165.53, 27, 17.93], ["2026-09-23", 820.85, 19, 17.77], ["2026-09-24", 0.0, 0, 0], ["2026-09-25", 0.0, 0, 0], ["2026-09-26", 754.83, 14, 2.84], ["2026-09-27", 447.16, 15, 4.71], ["2026-09-28", 402.51, 9, 0.25], ["2026-09-29", 0.0, 0, 0], ["2026-09-30", 0.0, 0, 0], ["2026-10-01", 0.0, 0, 0], ["2026-10-02", 0.0, 0, 0], ["2026-10-03", 858.41, 21, 5.72], ["2026-10-04", 1877.56, 29, 10.48], ["2026-10-05", 164.82, 7, 1.56], ["2026-10-06", 254.77, 7, 1.1], ["2026-10-07", 295.52, 8, 17.63], ["2026-10-08", 127.96, 5, 0], ["2026-10-09", 648.31, 10, 1.5], ["2026-10-10", 0.0, 0, 0], ["2026-10-11", 422.29, 9, 3.5], ["2026-10-12", 825.04, 14, 0.4], ["2026-10-13", 841.13, 19, 5.48], ["2026-10-14", 1614.39, 35, 14.38], ["2026-10-15", 1244.2, 27, 5.84], ["2026-10-16", 1517.75, 38, 4.42], ["2026-10-17", 1528.65, 23, 21.53], ["2026-10-18", 926.97, 24, 23.77], ["2026-10-19", 1096.06, 21, 22.76], ["2026-10-20", 2070.81, 39, 14.52], ["2026-10-21", 1543.24, 27, 7.12], ["2026-10-22", 1266.57, 36, 10.9], ["2026-10-23", 673.6, 15, 6.01], ["2026-10-24", 1430.76, 44, 18.75], ["2026-10-25", 1753.97, 41, 23.5], ["2026-10-26", 1545.19, 26, 18.99], ["2026-10-27", 1474.51, 31, 16.24], ["2026-10-28", 1235.16, 31, 18.75], ["2026-10-29", 1389.75, 21, 5.94], ["2026-10-30", 1201.63, 31, 10.02], ["2026-10-31", 1347.88, 39, 16.99], ["2026-11-01", 1651.99, 41, 21.75], ["2026-11-02", 921.37, 22, 16.12], ["2026-11-03", 586.75, 11, 23.12], ["2026-11-04", 494.56, 10, 17.74], ["2026-11-05", 1280.78, 19, 21.5], ["2026-11-06", 333.72, 6, 18.01], ["2026-11-07", 1086.73, 25, 15.55], ["2026-11-08", 438.37, 10, 15.08], ["2026-11-09", 1056.98, 20, 17.99], ["2026-11-10", 595.79, 13, 18.51], ["2026-11-11", 362.92, 9, 22.99], ["2026-11-12", 1084.72, 24, 20.49], ["2026-11-13", 800.79, 12, 24.0], ["2026-11-14", 670.39, 16, 24.0], ["2026-11-15", 1069.73, 25, 21.56], ["2026-11-16", 2824.35, 34, 19.43], ["2026-11-17", 1439.46, 24, 20.49], ["2026-11-18", 505.65, 10, 10.43]], "heat": [[0, 0, 128.81, 2.228], [0, 1, 76.18, 1.763], [0, 2, 58.47, 1.551], [0, 3, 80.29, 1.519], [0, 4, 44.75, 1.009], [0, 5, 43.0, 0.868], [0, 6, 44.55, 1.227], [0, 7, 27.59, 0.64], [0, 8, 62.35, 1.027], [0, 9, 18.19, 0.483], [0, 10, 28.06, 0.694], [0, 11, 30.98, 0.971], [0, 12, 53.8, 1.185], [0, 13, 87.54, 1.365], [0, 14, 50.6, 0.919], [0, 15, 23.83, 0.787], [0, 16, 118.87, 1.295], [0, 17, 83.89, 1.539], [0, 18, 132.73, 2.244], [0, 19, 119.78, 2.287], [0, 20, 115.57, 2.041], [0, 21, 65.94, 1.753], [0, 22, 150.96, 2.187], [0, 23, 74.49, 1.709], [1, 0, 86.12, 1.747], [1, 1, 75.0, 1.46], [1, 2, 55.84, 1.418], [1, 3, 48.4, 1.216], [1, 4, 34.82, 0.824], [1, 5, 27.28, 0.716], [1, 6, 42.65, 1.127], [1, 7, 24.78, 0.713], [1, 8, 15.27, 0.439], [1, 9, 31.4, 0.674], [1, 10, 34.99, 0.6], [1, 11, 61.44, 1.154], [1, 12, 86.8, 1.656], [1, 13, 38.23, 0.982], [1, 14, 47.86, 0.933], [1, 15, 35.07, 0.877], [1, 16, 60.77, 1.447], [1, 17, 46.74, 1.253], [1, 18, 68.13, 1.477], [1, 19, 81.18, 1.889], [1, 20, 106.17, 2.145], [1, 21, 86.33, 1.683], [1, 22, 83.84, 1.97], [1, 23, 95.44, 2.122], [2, 0, 103.45, 2.129], [2, 1, 111.17, 1.627], [2, 2, 61.46, 1.325], [2, 3, 51.73, 1.251], [2, 4, 54.42, 1.081], [2, 5, 75.52, 1.646], [2, 6, 45.62, 0.837], [2, 7, 40.92, 0.842], [2, 8, 14.17, 0.398], [2, 9, 21.47, 0.526], [2, 10, 24.51, 0.7], [2, 11, 12.39, 0.399], [2, 12, 57.33, 1.071], [2, 13, 32.16, 0.78], [2, 14, 48.35, 0.96], [2, 15, 79.48, 1.378], [2, 16, 58.51, 1.367], [2, 17, 45.42, 0.947], [2, 18, 135.77, 2.861], [2, 19, 99.72, 1.656], [2, 20, 77.73, 1.901], [2, 21, 45.9, 1.361], [2, 22, 66.06, 1.528], [2, 23, 99.72, 1.928], [3, 0, 106.64, 1.893], [3, 1, 68.27, 1.635], [3, 2, 58.26, 1.171], [3, 3, 59.49, 1.419], [3, 4, 49.16, 1.2], [3, 5, 46.53, 0.958], [3, 6, 23.57, 0.503], [3, 7, 34.24, 0.609], [3, 8, 30.27, 0.391], [3, 9, 24.94, 0.806], [3, 10, 33.88, 1.078], [3, 11, 67.34, 1.464], [3, 12, 31.25, 0.785], [3, 13, 55.88, 1.485], [3, 14, 44.0, 0.821], [3, 15, 82.87, 1.832], [3, 16, 100.1, 2.073], [3, 17, 60.0, 1.314], [3, 18, 109.05, 2.135], [3, 19, 48.05, 1.234], [3, 20, 88.78, 2.244], [3, 21, 95.36, 2.064], [3, 22, 105.88, 1.98], [3, 23, 129.94, 2.394], [4, 0, 90.79, 2.394], [4, 1, 107.49, 2.039], [4, 2, 72.46, 1.683], [4, 3, 87.54, 1.874], [4, 4, 38.14, 0.883], [4, 5, 73.36, 1.286], [4, 6, 75.04, 1.839], [4, 7, 34.66, 1.009], [4, 8, 29.83, 0.956], [4, 9, 46.12, 1.065], [4, 10, 42.79, 0.929], [4, 11, 21.13, 0.447], [4, 12, 40.77, 0.766], [4, 13, 57.3, 1.166], [4, 14, 93.85, 1.77], [4, 15, 72.4, 1.756], [4, 16, 76.32, 1.87], [4, 17, 75.09, 1.778], [4, 18, 86.81, 1.705], [4, 19, 153.13, 1.865], [4, 20, 97.22, 1.884], [4, 21, 60.43, 1.395], [4, 22, 90.1, 1.562], [4, 23, 90.17, 1.91], [5, 0, 107.28, 2.36], [5, 1, 79.33, 1.765], [5, 2, 55.28, 1.409], [5, 3, 67.42, 1.276], [5, 4, 66.1, 1.732], [5, 5, 66.84, 1.451], [5, 6, 39.02, 1.218], [5, 7, 31.28, 0.686], [5, 8, 49.95, 0.94], [5, 9, 26.81, 0.675], [5, 10, 35.82, 0.948], [5, 11, 31.22, 0.787], [5, 12, 69.89, 1.179], [5, 13, 60.87, 1.372], [5, 14, 52.07, 1.103], [5, 15, 91.15, 1.633], [5, 16, 76.25, 1.643], [5, 17, 67.1, 1.5], [5, 18, 121.51, 2.344], [5, 19, 105.33, 1.708], [5, 20, 111.29, 2.586], [5, 21, 100.19, 2.218], [5, 22, 103.84, 1.97], [5, 23, 115.44, 2.662], [6, 0, 78.5, 2.141], [6, 1, 67.4, 1.547], [6, 2, 110.7, 2.288], [6, 3, 61.28, 1.581], [6, 4, 55.22, 1.238], [6, 5, 67.83, 1.149], [6, 6, 40.0, 1.05], [6, 7, 43.38, 1.01], [6, 8, 37.29, 1.101], [6, 9, 34.57, 0.99], [6, 10, 33.73, 0.819], [6, 11, 30.76, 0.905], [6, 12, 59.93, 1.304], [6, 13, 56.38, 0.967], [6, 14, 101.03, 1.502], [6, 15, 72.04, 1.394], [6, 16, 86.89, 1.833], [6, 17, 99.87, 1.584], [6, 18, 85.6, 1.849], [6, 19, 104.19, 1.993], [6, 20, 105.28, 2.108], [6, 21, 105.29, 2.294], [6, 22, 85.03, 2.3], [6, 23, 125.38, 1.809]], "baskets": [{"t": "under 15 €", "n": 9.7, "e": 2.0}, {"t": "15–30 €", "n": 28.9, "e": 13.3}, {"t": "30–50 €", "n": 29.8, "e": 23.7}, {"t": "50–100 €", "n": 23.2, "e": 32.6}, {"t": "100–200 €", "n": 7.1, "e": 19.8}, {"t": "200 €+", "n": 1.3, "e": 8.5}], "buyers": [{"u": "dimix66", "n": 6, "e": 1493.97}, {"u": "goiasrpoficial", "n": 1, "e": 825.0}, {"u": "Moldova_RP", "n": 11, "e": 821.23}, {"u": "Nigel_School", "n": 2, "e": 801.02}, {"u": "Fighter2694", "n": 3, "e": 763.2}, {"u": "ian_riley", "n": 9, "e": 562.23}, {"u": "DirtyGibby", "n": 2, "e": 561.82}, {"u": "KING_TAZZ", "n": 10, "e": 539.54}]};
+const K = D.k, F = D.facts;
+const nf = (d) => new Intl.NumberFormat('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const eur = (v, d = 0) => '€' + nf(d).format(v);
+const keur = (v) => v >= 1e5 ? '€' + nf(0).format(v / 1e3) + 'k' : '€' + nf(1).format(v / 1e3) + 'k';
+const pct = (v, d = 1) => nf(d).format(v) + '%';
+const hh = (h) => String(h).padStart(2, '0') + ':00';
+const ns = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, parent, text) => {
+  const e = document.createElementNS(ns, tag);
+  for (const [a, v] of Object.entries(attrs)) e.setAttribute(a, v);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+/* ---------- text ---------- */
+const lede = document.getElementById('lede');
+lede.append('The store brings in about ', h('b', 'num', eur(K.est_jour)), ' a day, roughly ', h('b', 'num', eur(K.est_mois)),
+  ' a month. November dropped to ', h('b', 'num', eur(K.nov_jour)), ' a day, ', h('b', 'num down', pct(K.nov_vs_oct)), ' versus October.');
+
+const hero = document.getElementById('hero');
+[[eur(K.est_jour), 'per day, estimated', 'big'],
+ [keur(K.est_mois), 'per month', 'mid'],
+ [keur(K.est_an), 'per year', 'mid'],
+ [keur(K.estime_periode), 'over the 267 days (' + keur(K.observe_eur) + ' captured)', 'mid']].forEach(([v, l, c]) => {
+  const d = h('div'); d.append(h('span', c + ' num', v), h('span', 'lbl', l)); hero.appendChild(d);
+});
+
+const facts = [
+  ['1 sale / ' + nf(0).format(F.every_min) + ' min', 'on average, day and night (' + nf(1).format(K.ventes_jour) + ' sales a day)'],
+  [eur(F.per_min, 2), 'earned every minute, around the clock'],
+  [eur(F.best.v), 'per hour on ' + F.best.d + 's at ' + hh(F.best.h) + ', the best hour of the week'],
+  [nf(1).format(F.evening_x) + '×', 'more revenue per hour in the evening (18–24h) than in the morning (7–12h)'],
+  ['+' + pct(F.weekend_pct, 0), 'more revenue on a weekend day than on a weekday'],
+  [pct(F.big_orders_pct, 1), 'of orders are €100 or more, and they bring ' + pct(F.big_rev_pct, 0) + ' of revenue'],
+  [eur(F.price), 'is the most common price paid (' + F.price_n + ' orders)'],
+  [pct(K.part_recurrents, 0), 'of revenue comes from customers who bought more than once'],
+];
+const fx = document.getElementById('facts');
+facts.forEach(([v, t]) => { const d = h('div', 'fact'); d.append(h('span', 'fv num', v), h('span', 'ft', t)); fx.appendChild(d); });
+
+const bl = document.getElementById('buyers');
+D.buyers.forEach((b, i) => {
+  const li = h('li'); li.append(h('span', 'r num', i + 1), h('span', 'u', b.u), h('span', 'n num', b.n + (b.n > 1 ? ' orders' : ' order')), h('span', 'e num', eur(b.e)));
+  bl.appendChild(li);
+});
+
+const about = document.getElementById('about');
+[
+  'The store page only lists the 5 latest sales, scraped every 15 minutes. A stretch between two scrapes counts as verified when the second one still shows a sale already known, so nothing could slip through. ' + pct(K.couverture_pct) + ' of the ' + nf(0).format(K.heures_total) + ' hours tracked are verified.',
+  'Estimates use the average revenue of each of the 168 hours of the week measured on verified stretches, so nights and weekends are not over-weighted.',
+  'The store shows times in UTC. Everything here is converted to Paris time. GBP payments are converted at £1 = €1.16.',
+  'All figures are gross amounts paid by customers, before Tebex fees, VAT and refunds.',
+].forEach((t) => about.appendChild(h('li', '', t)));
+document.getElementById('foot').textContent = nf(0).format(K.observe_n) + ' payments · ' + nf(0).format(K.acheteurs) + ' customers · data cleaned Nov 18, 2026';
+
+/* ---------- tooltip ---------- */
+function tipFor(box) {
+  const t = h('div', 'tip'); t.hidden = true; box.appendChild(t);
+  return {
+    show(title, lines, x, y) {
+      t.replaceChildren(h('b', '', title), ...lines.map((l) => h('div', '', l))); t.hidden = false;
+      const w = t.offsetWidth; t.style.left = Math.max(0, Math.min(box.clientWidth - w, x - w / 2)) + 'px';
+      t.style.top = Math.max(-8, y - t.offsetHeight - 12) + 'px';
+    },
+    hide() { t.hidden = true; },
+  };
+}
+
+/* ---------- charts ---------- */
+function months() {
+  const box = document.getElementById('c-months'); box.replaceChildren();
+  const W = box.clientWidth, H = 250, top = 24, bot = 26, rows = D.months;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Estimated revenue per day for each month from February to November 2026' }, box);
+  const max = Math.max(...rows.map((r) => r.v)) * 1.06, step = W / rows.length, bw = Math.min(46, step * 0.62);
+  const y = (v) => H - bot - (v / max) * (H - top - bot);
+  const avgRows = rows.filter((r) => r.m !== 'Feb'), avg = avgRows.reduce((a, r) => a + r.v, 0) / avgRows.length;
+  el('line', { x1: 0, x2: W, y1: H - bot, y2: H - bot, stroke: css('--line') }, svg);
+  el('line', { x1: 0, x2: W, y1: y(avg), y2: y(avg), stroke: css('--muted'), 'stroke-dasharray': '2 5', 'stroke-opacity': .7 }, svg);
+  el('text', { x: W, y: y(avg) - 6, 'text-anchor': 'end' }, svg, 'Mar–Nov average ' + eur(avg));
+  const tip = tipFor(box);
+  rows.forEach((r, i) => {
+    const cx = step * i + step / 2;
+    const col = r.m === 'Nov' ? css('--warn') : r.m === 'Feb' ? css('--soft') : css('--accent');
+    el('rect', { x: cx - bw / 2, y: y(r.v), width: bw, height: H - bot - y(r.v), rx: 3, fill: col, stroke: r.m === 'Feb' ? css('--line') : 'none' }, svg);
+    el('text', { x: cx, y: y(r.v) - 7, 'text-anchor': 'middle', class: 'v' }, svg, step < 46 ? nf(1).format(r.v / 1e3) + 'k' : nf(0).format(r.v));
+    el('text', { x: cx, y: H - 8, 'text-anchor': 'middle' }, svg, r.m);
+    el('rect', { x: step * i, y: top, width: step, height: H - top - bot, fill: 'transparent' }, svg)
+      .addEventListener('pointermove', () => tip.show(r.m + ' 2026', [eur(r.v) + ' / day estimated', nf(1).format(r.n) + ' sales / day', eur(r.est) + ' estimated for the month', eur(r.obs) + ' captured', nf(0).format(r.h) + ' verified hours'], cx, y(r.v)));
+  });
+  svg.addEventListener('pointerleave', () => tip.hide());
+}
+
+function heat() {
+  const box = document.getElementById('c-heat'); box.replaceChildren();
+  const W = box.clientWidth, lab = 36, top = 18, cw = (W - lab) / 24, ch = Math.max(18, Math.min(30, cw)), H = top + ch * 7 + 36;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Revenue per hour for each weekday and hour, Paris time' }, box);
+  const max = Math.max(...D.heat.map((r) => r[2])), acc = css('--accent');
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  days.forEach((d, i) => el('text', { x: 0, y: top + i * ch + ch / 2 + 4 }, svg, d));
+  const every = cw < 22 ? 6 : 3;
+  for (let hr = 0; hr < 24; hr += every) el('text', { x: lab + hr * cw + 1, y: 11 }, svg, String(hr).padStart(2, '0') + 'h');
+  const tip = tipFor(box);
+  D.heat.forEach(([d, hr, v, n]) => {
+    const x = lab + hr * cw, yy = top + d * ch;
+    el('rect', { x: x + 1, y: yy + 1, width: cw - 2, height: ch - 2, rx: 2, fill: acc, 'fill-opacity': (0.05 + 0.95 * Math.pow(v / max, 1.1)).toFixed(3) }, svg)
+      .addEventListener('pointermove', () => tip.show(days[d] + ' ' + hh(hr) + '–' + hh((hr + 1) % 24), [eur(v) + ' per hour', nf(1).format(n) + ' sales per hour'], x + cw / 2, yy));
+  });
+  svg.addEventListener('pointerleave', () => tip.hide());
+  const ly = top + ch * 7 + 16, lw = Math.min(160, W - lab - 110);
+  const g = el('linearGradient', { id: 'hg' }, el('defs', {}, svg));
+  el('stop', { offset: '0', 'stop-color': acc, 'stop-opacity': .05 }, g); el('stop', { offset: '1', 'stop-color': acc, 'stop-opacity': 1 }, g);
+  el('text', { x: lab, y: ly + 9 }, svg, '€0');
+  el('rect', { x: lab + 24, y: ly, width: lw, height: 10, rx: 2, fill: 'url(#hg)' }, svg);
+  el('text', { x: lab + 30 + lw, y: ly + 9 }, svg, eur(max) + ' / h');
+}
+
+function baskets() {
+  const box = document.getElementById('c-baskets'); box.replaceChildren();
+  const W = box.clientWidth, lab = 82, rh = 36, H = D.baskets.length * rh, vw = 46;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Share of orders and share of revenue by order size' }, box);
+  const max = Math.max(...D.baskets.flatMap((r) => [r.n, r.e])), x = (v) => (v / max) * (W - lab - vw);
+  D.baskets.forEach((r, i) => {
+    const y0 = i * rh;
+    el('text', { x: 0, y: y0 + rh / 2 + 3 }, svg, r.t);
+    [[r.n, css('--muted'), 5], [r.e, css('--accent'), 18]].forEach(([v, c, dy]) => {
+      el('rect', { x: lab, y: y0 + dy, width: Math.max(1, x(v)), height: 10, rx: 2, fill: c, 'fill-opacity': c === css('--muted') ? .45 : 1 }, svg);
+      el('text', { x: lab + x(v) + 6, y: y0 + dy + 9, class: 'v' }, svg, pct(v));
+    });
+  });
+}
+
+function days() {
+  const box = document.getElementById('c-days'); box.replaceChildren();
+  const rows = D.days, W = box.clientWidth, H = 200, strip = 8, bot = 34, top = 8;
+  const max = Math.max(...rows.map((r) => r[1]));
+  const niceMax = Math.ceil(max / 1000) * 1000, ticks = [0, niceMax / 2, niceMax];
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Captured revenue per day from February 24 to November 18, 2026' }, box);
+  const tl = ticks.map((t) => el('text', { 'text-anchor': 'end' }, svg, eur(t)));
+  const lw = Math.max(...tl.map((t) => t.getComputedTextLength())) + 10;
+  const x0 = lw, x1 = W, base = H - bot - strip - 6;
+  const x = (i) => x0 + (i / (rows.length - 1)) * (x1 - x0), y = (v) => base - (v / niceMax) * (base - top);
+  ticks.forEach((t, i) => { tl[i].setAttribute('x', lw - 8); tl[i].setAttribute('y', y(t) + 4); el('line', { x1: x0, x2: x1, y1: y(t), y2: y(t), stroke: css('--line') }, svg); });
+  const pts = rows.map((r, i) => x(i).toFixed(1) + ',' + y(r[1]).toFixed(1));
+  el('path', { d: `M${x0},${base}L${pts.join('L')}L${x1},${base}Z`, fill: css('--accent'), 'fill-opacity': .1 }, svg);
+  el('path', { d: 'M' + pts.join('L'), fill: 'none', stroke: css('--accent'), 'stroke-width': 1.3, 'stroke-linejoin': 'round' }, svg);
+  const sw = (x1 - x0) / rows.length, sy = H - bot - strip;
+  rows.forEach((r, i) => el('rect', { x: x(i) - sw / 2, y: sy, width: sw + .4, height: strip, fill: css('--accent'), 'fill-opacity': (0.05 + 0.95 * Math.min(1, r[3] / 24)).toFixed(2) }, svg));
+  const mn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  rows.forEach((r, i) => { if (r[0].endsWith('-01') && (W > 520 || (+r[0].slice(5, 7)) % 2)) el('text', { x: x(i), y: H - 10, 'text-anchor': 'middle' }, svg, mn[+r[0].slice(5, 7) - 1]); });
+  const dot = el('circle', { r: 3.5, fill: css('--accent'), stroke: css('--bg'), 'stroke-width': 2, visibility: 'hidden' }, svg);
+  const tip = tipFor(box), fmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'short', timeZone: 'UTC' });
+  const hit = el('rect', { x: x0, y: top, width: x1 - x0, height: H - top - bot, fill: 'transparent' }, svg);
+  hit.addEventListener('pointermove', (ev) => {
+    const b = svg.getBoundingClientRect(), px = (ev.clientX - b.left) * (W / b.width);
+    const i = Math.max(0, Math.min(rows.length - 1, Math.round((px - x0) / (x1 - x0) * (rows.length - 1)))), r = rows[i];
+    dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r[1])); dot.setAttribute('visibility', 'visible');
+    tip.show(fmt.format(new Date(r[0] + 'T00:00:00Z')), [eur(r[1]) + ' captured', r[2] + ' sales', nf(1).format(r[3]) + ' h verified of 24'], x(i), y(r[1]));
+  });
+  hit.addEventListener('pointerleave', () => { tip.hide(); dot.setAttribute('visibility', 'hidden'); });
+}
+
+const draw = () => { months(); heat(); baskets(); days(); };
+draw();
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+</script>
+</body>
+</html>

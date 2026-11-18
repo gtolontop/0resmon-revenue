@@ -1,0 +1,96 @@
+=== VOLUME ===
+scrapes log 17289 | ok 8907 | vides(Cloudflare/0) 8315 | erreurs 67 | desalignes 3690
+lignes brutes 6858 non rattachees 0 | doublons decalage 577 | collisions legit 2 | propres 6281
+pseudos incertains 2583 | date incertaine 90
+verifie: 3107.0 h | non verifie 3299.3 h | periode 6410.1 h (267.1 j) | couverture verifiee 48.5%
+revenu observe propre 299922.16 EUR (6281 paiements) | dont fenetres verifiees 214482.11 EUR (4495)
+brut avant nettoyage (EUR+GBP additionnes tels quels) 324568.76
+taux moyen brut verifie 69.032 EUR/h ; 1.447 paiements/h
+estimation semaine (pondere heure-de-semaine) 11304.23 EUR | 237.6 paiements | /jour 1614.89 | /mois(30.44j) 49157.27 | /an 589435
+buckets heure-semaine <3h d'expo: 0
+
+=== PAR MOIS (heure Paris) ===
+2026-02 obs 86 / 4246.89 EUR | verif 19h -> 117.37 EUR/h, 2816.90 EUR/j, 70.19 ventes/j
+2026-03 obs 520 / 28145.50 EUR | verif 139h -> 113.68 EUR/h, 2728.39 EUR/j, 52.56 ventes/j
+2026-04 obs 644 / 31671.86 EUR | verif 242h -> 75.94 EUR/h, 1822.47 EUR/j, 36.99 ventes/j
+2026-05 obs 637 / 30439.34 EUR | verif 352h -> 64.61 EUR/h, 1550.61 EUR/j, 32.94 ventes/j
+2026-06 obs 864 / 41556.80 EUR | verif 458h -> 59.79 EUR/h, 1435.01 EUR/j, 30.33 ventes/j
+2026-07 obs 1184 / 50853.40 EUR | verif 550h -> 73.58 EUR/h, 1765.91 EUR/j, 40.65 ventes/j
+2026-08 obs 818 / 40497.56 EUR | verif 462h -> 78.69 EUR/h, 1888.57 EUR/j, 37.85 ventes/j
+2026-09 obs 519 / 24128.91 EUR | verif 227h -> 72.75 EUR/h, 1745.99 EUR/j, 36.61 ventes/j
+2026-10 obs 678 / 31176.88 EUR | verif 308h -> 66.62 EUR/h, 1598.87 EUR/j, 33.45 ventes/j
+2026-11 obs 331 / 17205.03 EUR | verif 349h -> 40.09 EUR/h, 962.19 EUR/j, 18.03 ventes/j
+
+=== PROFIL HORAIRE (EUR/h verifie, heure Paris) ===
+00h expo  139.0h   100.38 EUR/h  2.12 ventes/h
+01h expo  143.0h    83.18 EUR/h  1.68 ventes/h
+02h expo  138.0h    68.36 EUR/h  1.56 ventes/h
+03h expo  127.6h    65.16 EUR/h  1.45 ventes/h
+04h expo  124.1h    49.11 EUR/h  1.14 ventes/h
+05h expo  125.8h    57.72 EUR/h  1.16 ventes/h
+06h expo  121.1h    44.34 EUR/h  1.11 ventes/h
+07h expo  118.8h    34.20 EUR/h  0.79 ventes/h
+08h expo  117.6h    34.23 EUR/h  0.75 ventes/h
+09h expo  117.0h    28.48 EUR/h  0.73 ventes/h
+10h expo  118.5h    32.90 EUR/h  0.81 ventes/h
+11h expo  122.9h    34.39 EUR/h  0.85 ventes/h
+12h expo  122.8h    58.19 EUR/h  1.15 ventes/h
+13h expo  119.5h    55.54 EUR/h  1.15 ventes/h
+14h expo  121.5h    63.95 EUR/h  1.15 ventes/h
+15h expo  127.0h    66.74 EUR/h  1.38 ventes/h
+16h expo  132.8h    81.63 EUR/h  1.64 ventes/h
+17h expo  134.3h    68.86 EUR/h  1.41 ventes/h
+18h expo  130.4h   105.59 EUR/h  2.09 ventes/h
+19h expo  139.8h   101.57 EUR/h  1.83 ventes/h
+20h expo  136.9h   101.17 EUR/h  2.15 ventes/h
+21h expo  140.6h    82.32 EUR/h  1.87 ventes/h
+22h expo  141.7h    97.16 EUR/h  1.96 ventes/h
+23h expo  146.2h   104.89 EUR/h  2.07 ventes/h
+
+=== PROFIL JOUR SEMAINE ===
+lun expo 460h  72.91 EUR/h -> 1749.73 EUR/j  34.0 ventes/j
+mar expo 437h  59.73 EUR/h -> 1433.42 EUR/j  31.8 ventes/j
+mer expo 464h  61.27 EUR/h -> 1470.52 EUR/j  30.6 ventes/j
+jeu expo 370h  65.16 EUR/h -> 1563.74 EUR/j  33.7 ventes/j
+ven expo 364h  71.79 EUR/h -> 1722.92 EUR/j  36.0 ventes/j
+sam expo 474h  75.06 EUR/h -> 1801.53 EUR/j  38.4 ventes/j
+dim expo 537h  75.46 EUR/h -> 1811.09 EUR/j  37.8 ventes/j
+
+=== PANIER ===
+moy 47.75 med 36.00 min 1.20 max 825.00 p90 90.00 p99 216.00
+0-15: 608 (9.7%) = 6100.61 EUR (2.0%)
+15-30: 1813 (28.9%) = 39915.48 EUR (13.3%)
+30-50: 1873 (29.8%) = 71128.08 EUR (23.7%)
+50-100: 1456 (23.2%) = 97850.35 EUR (32.6%)
+100-200: 449 (7.1%) = 59432.97 EUR (19.8%)
+200-+: 82 (1.3%) = 25494.67 EUR (8.5%)
+devise Counter({'EUR': 5940, 'GBP': 341}) GBP en EUR 15943.34
+top montants [(30.0, 257), (18.0, 157), (36.0, 155), (15.0, 137), (60.0, 120), (24.0, 118), (42.0, 106), (40.0, 99), (50.0, 95), (20.0, 77), (27.0, 76), (45.0, 69)]
+plus gros paiements [('goiasrpoficial', 825.0, 'EUR', '2026-04-29 01:49'), ('dimix66', 822.03, 'EUR', '2026-04-11 18:44'), ('ClaudiuAdrian', 798.75, 'EUR', '2026-06-28 00:51'), ('Nigel_School', 704.22, 'EUR', '2026-10-04 23:43'), ('Miller3093', 691.65, 'EUR', '2026-07-03 19:56'), ('Blodf1sh', 684.0, 'EUR', '2026-11-16 16:51'), ('Blodf1sh', 684.0, 'EUR', '2026-11-16 16:53'), ('Fighter2694', 648.0, 'EUR', '2026-08-02 14:02')]
+
+=== JOURS (obs, Paris) ===
+top jours [('2026-03-15', 3435.6699999999996), ('2026-07-01', 3370.6731999999984), ('2026-07-19', 3302.2824), ('2026-04-11', 2991.87), ('2026-08-13', 2952.2396)] [48, 64, 70, 61, 36]
+top heures-pleines (fenetre 60min glissante max)
+  1596.00 EUR en 1h finissant 2026-11-16 16:53:00 (5 ventes)
+
+=== ACHETEURS (pseudos fiables uniquement) ===
+acheteurs distincts 2589 | 1 achat 1930 | 2+ 659 | 5+ 55
+CA des recurrents 45.7%
+top par CA [('dimix66', 6, 1493.96), ('goiasrpoficial', 1, 825.0), ('moldova_rp', 11, 821.23), ('nigel_school', 2, 801.02), ('fighter2694', 3, 763.2), ('ian_riley', 9, 562.23), ('dirtygibby', 2, 561.82), ('king_tazz', 10, 539.54), ('legacynorge', 5, 512.75), ('pandabeer1309', 7, 512.19)]
+top par nb [('vinestreet', 13, 273.47), ('moldova_rp', 11, 821.23), ('invictus6613', 11, 215.34), ('king_tazz', 10, 539.54), ('hungarian', 9, 243.04)]
+top 10% acheteurs = 33.7% du CA
+
+=== PACKAGES (catalogue fige depuis 2026-09-27 21:59:54) ===
+exacts 145 approx ~ 5833 ambigus ? 23 aucun 280
+  BP In-Game Billboard Creator , Draw, Vid 1033 ventes  73242.82 EUR (exact 25)
+  BP Diffrent Multicharacter - Adjustable,  878 ventes  31006.81 EUR (exact 23)
+  WAIS HUD V6 Customizable - Positionable   643 ventes  29454.51 EUR (exact 29)
+  0R-Multiplayer Heist Robbery Pack (15 Ro  207 ventes  25364.14 EUR (exact 7)
+  Npc BodyGuard  Escrow (Zone protection,   627 ventes  19938.87 EUR (exact 0)
+  BP-Spy System  (Voice Listener , Gps, Bu  598 ventes  17815.01 EUR (exact 12)
+  0R-Resbundle Open Source | 0r             120 ventes  17775.44 EUR (exact 0)
+  0R-Pausemenu Escrow   | lab               932 ventes  16764.63 EUR (exact 11)
+  BP-Prop Hunt Script (Hide and Seek) + 2   376 ventes  12130.67 EUR (exact 34)
+  0R-Chat [3 Different Chat Type]  Escrow   503 ventes   4768.34 EUR (exact 0)
+  Illegal Bundle (Heist Pack + Illegal Job   13 ventes   3155.51 EUR (exact 0)
+  MANAGEABLE AND HIGHLY DETAILED MOTEL  SY   26 ventes   1644.13 EUR (exact 0)

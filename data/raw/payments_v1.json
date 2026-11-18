@@ -1,0 +1,46 @@
+{
+  "seen_ids": [
+    "tinazz|Today 13:53|24.0EUR",
+    "sinnotesss|Today 13:50|48.0EUR",
+    "zena0027|Today 13:21|24.0EUR",
+    "Junior_Ramirez|Today 13:07|20.0EUR",
+    "Trolex1|Today 12:37|183.0EUR"
+  ],
+  "payments": [
+    {
+      "username": "tinazz",
+      "time_label": "Today 13:53",
+      "amount": 24.0,
+      "currency": "EUR",
+      "scraped_at": "2026-02-24 15:19:04"
+    },
+    {
+      "username": "sinnotesss",
+      "time_label": "Today 13:50",
+      "amount": 48.0,
+      "currency": "EUR",
+      "scraped_at": "2026-02-24 15:19:04"
+    },
+    {
+      "username": "zena0027",
+      "time_label": "Today 13:21",
+      "amount": 24.0,
+      "currency": "EUR",
+      "scraped_at": "2026-02-24 15:19:04"
+    },
+    {
+      "username": "Junior_Ramirez",
+      "time_label": "Today 13:07",
+      "amount": 20.0,
+      "currency": "EUR",
+      "scraped_at": "2026-02-24 15:19:04"
+    },
+    {
+      "username": "Trolex1",
+      "time_label": "Today 12:37",
+      "amount": 183.0,
+      "currency": "EUR",
+      "scraped_at": "2026-02-24 15:19:04"
+    }
+  ]
+}
